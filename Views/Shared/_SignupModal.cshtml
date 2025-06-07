@@ -1,0 +1,30 @@
+﻿<!-- _SignupModal.cshtml -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-action="Register" asp-controller="Account" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Full Name</label>
+                        <input type="text" name="FullName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="Email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Pasword</label>
+                        <input type="password" name="Password" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

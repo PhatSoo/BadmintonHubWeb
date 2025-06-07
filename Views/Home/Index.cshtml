@@ -1,0 +1,189 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model BookingViewModel
+
+<div class="container-fluid">
+    <div class="row">
+        @await Component.InvokeAsync("LoadInfo")
+
+        <div class="col-12 col-lg-6 order-lg-1 mt-lg-0 mt-5 px-3">
+            <p>Booking your appointment</p>
+
+            <hr />
+
+            <div class="d-flex gap-2 align-items-center bg-secondary p-2">
+                <img class="rounded border border-1 border-dark" width="70" height="70" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgIAFwTaBOi189iF7NSxzRx7U1oI90_QsS6A&s" />
+                <div>
+                    <h5 class="m-0 text-white fw-bold">Booking court</h5>
+                    <p class="m-0 text-white">Get a court...</p>
+                    <h6 class="m-0 text-white">$3 - <span class="fw-lighter">1 hour</span></h6>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="d-flex gap-2 align-items-center p-2">
+                <img class="rounded border border-1 border-dark" width="70" height="70" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/badminton-coach-1653707-1400021.png" />
+                <div>
+                    <h5 class="m-0 fw-bold">Booking coach</h5>
+                    <p class="m-0">Get a professional coach's badminton...</p>
+                    <h6 class="m-0">$10 - <span class="fw-lighter">1 hour/person</span></h6>
+                </div>
+            </div>
+
+            <hr />
+
+            <div>
+                @await Component.InvokeAsync("LoadBookingDate")
+
+                <div class="card card-body mt-2">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4 text-center fw-bold">
+                            <label asp-for="@Model.FindCourts.StartTime">Start Time</label>
+                            <input asp-for="@Model.FindCourts.StartTime" type="time" class="form-control" id="startTime">
+                        </div>
+
+                        <div class="col-md-4 text-center fw-bold">
+                            <label asp-for="@Model.FindCourts.EndTime">End Time</label>
+                            <input asp-for="@Model.FindCourts.EndTime" type="time" class="form-control" id="endTime">
+                        </div>
+                        <button class="col-md-4 btn btn-primary" onclick="handleFindAvailableCourts()">Check for available course</button>
+                    </div>
+                </div>
+
+                <div id="courtSelection" class="d-none mt-2 px-2">
+                    <h5>Court selection</h5>
+
+                    <!-- PHẦN 1: Chọn sân cụ thể -->
+                    <div class="mb-3">
+                        <label class="form-label">Select a court:</label>
+                        <div id="court-options" class="form-check">
+                            @* <input class="form-check-input court-option" type="radio" name="court" id="court1" value="1"> *@
+                            @* <label class="form-check-label" for="court1">Course 1</label> *@
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Show Errors -->
+                <div id="errorContainer" class="alert alert-danger d-none mt-2" role="alert">
+                    <ul id="errorList" class="mb-0"></ul>
+                </div>
+
+                @* <form> *@
+                @*     <!-- PHẦN 2: Chọn ngẫu nhiên --> *@
+                @*     <div class="form-check mb-3"> *@
+                @*         <input class="form-check-input" type="checkbox" id="randomCourt" onchange="toggleCourtSelection()"> *@
+                @*         <label class="form-check-label fw-bold text-danger" for="randomCourt"> *@
+                @*             Select a randomly available court *@
+                @*         </label> *@
+                @*     </div> *@
+
+                @*     <!-- NÚT XÁC NHẬN --> *@
+                @*     <button id="submitForm" class="btn btn-success" onclick="confirmBooking()">Confirm</button> *@
+                @* </form> *@
+
+                @* <!-- KẾT QUẢ --> *@
+                @* <div id="resultMsg" class="alert alert-success mt-4 d-none">✅ Set appointment successfully</div> *@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const handleFindAvailableCourts = () => {
+        const startTime = document.getElementById("startTime").value;
+        const endTime = document.getElementById("endTime").value;
+        var selectedDate = document.querySelector('input[name="selectedDate"]:checked')?.value;
+
+        const data = {
+            selectedDate: selectedDate || null,
+            startTime,
+            endTime
+        }
+        console.log(data)
+
+        const url = '@Url.Action("FindAvailableCourts", "Home")';
+
+        const errorContainer = document.getElementById("errorContainer");
+        const courtSelection = document.getElementById("courtSelection");
+
+        $.ajax({
+            url,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (res) {
+                if (res.success) {
+                    errorContainer.classList.add('d-none')
+                    courtSelection.classList.remove('d-none');
+                    renderCourtOptions(res.availableCourts);
+                } else {
+                    // Show validation errors
+                    const errorList = document.getElementById("errorList");
+
+                    // Clear previous displayed errors
+                    errorList.innerHTML = "";
+
+                    const errors = res.errors
+                    const allMessages = [];
+                    for (const field in errors) {
+                        allMessages.push(...errors[field]);
+                    }
+
+                    // Display errors message
+                    if (allMessages.length > 0) {
+                        errorContainer.classList.remove('d-none')
+                        courtSelection.classList.add('d-none');
+
+                        allMessages.forEach(error => {
+                            const li = document.createElement('li');
+                            li.textContent = error;
+                            errorList.appendChild(li);
+                        });
+                    }
+                }
+            },
+            error: function (err) {
+                console.error("Error fetching available courts:", err);
+            }
+        })
+    }
+
+    function toggleCourtSelection() {
+        const isRandom = document.getElementById("randomCourt").checked;
+        const courtOptions = document.querySelectorAll(".court-option");
+
+        courtOptions.forEach(input => {
+            input.disabled = isRandom;
+            if (isRandom) input.checked = false;
+        });
+    }
+
+    function confirmBooking() {
+        const isRandom = document.getElementById("randomCourt").checked;
+        const selectedCourt = document.querySelector("input[name='court']:checked");
+
+        if (!isRandom && !selectedCourt) {
+            alert("Vui lòng chọn sân cụ thể hoặc chọn ngẫu nhiên!");
+            return;
+        }
+
+        document.getElementById("resultMsg").classList.remove("d-none");
+    }
+
+    function renderCourtOptions(courts) {
+        const container = document.getElementById("court-options");
+        container.innerHTML = ""; // Clear existing options
+
+        courts.forEach(court => {
+            const optionHtml = `
+                <div class="form-check">
+                    <input class="form-check-input court-option" type="radio" name="court" id="court${court.id}" value="${court.id}">
+                    <label class="form-check-label" for="court${court.id}">${court.name}</label>
+                </div>
+            `;
+            container.insertAdjacentHTML("beforeend", optionHtml);
+        });
+    }
+</script>

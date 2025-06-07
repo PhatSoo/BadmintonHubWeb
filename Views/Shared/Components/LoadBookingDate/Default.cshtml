@@ -1,0 +1,85 @@
+﻿@model List<FieldClourseViewModel>
+
+@{
+    var today = DateTime.Today;
+    var days = 13;
+    var closedDates = Model.Select(d => d.ClosedDate.Date).ToHashSet();
+}
+<div class="d-flex justify-content-between">
+    <h5>Today, @DateTime.Now.ToString("MMMM dd")</h5>
+    <div>
+        <button id="btn-prev" type="button" class="btn btn-sm btn-outline-secondary" onclick="prevWeek()">Previous</button>
+        <button id="btn-next" type="button" class="btn btn-sm btn-outline-secondary" onclick="nextWeek()">Next</button>
+    </div>
+</div>
+
+<div id="dateButtons" class="btn-group d-flex flex-wrap justify-content-center gap-2 mt-2" role="group" aria-label="Basic radio toggle button group">
+    @for (int i = 0; i <= days; i++)
+    {
+        var date = today.AddDays(i);
+        var id = $"selectedDate{i + 1}";
+        var isDateClosed = closedDates.Contains(date);
+        var isChecked = (i == 0 && !isDateClosed) ? "checked" : "";
+        var reason = "";
+        if (isDateClosed)
+        {
+            reason = Model.FirstOrDefault(d => d.ClosedDate.Date == date)?.Reason ?? "Ngày này không khả dụng";
+        }
+        var isDisabled = isDateClosed ? "disabled" : "";
+        var dayName = date.ToString("dddd");
+        var dayDisplay = date.ToString("dd MMM");
+        var labelClass = isDateClosed
+            ? "btn btn-outline-danger rounded date-label"
+            : "btn btn-outline-primary rounded date-label pe-auto";
+
+        <input value="@(date.ToString("yyyy-MM-dd"))" type="radio" class="btn-check date-item" name="selectedDate" id="@id" autocomplete="off" @isChecked @isDisabled data-index="@i">
+
+        <label data-bs-toggle="tooltip"
+               title="@reason"
+               style="pointer-events: auto;"
+               class="@labelClass" for="@id" data-index="@i">
+            @dayName<br><small>@dayDisplay</small>
+        </label>
+    }
+</div>
+
+<script>
+    // scrolling for booking date
+    let currentPage = 0;
+    const pageSize = 7;
+    const totalItems = @days + 1;
+
+    function updateDateVisibility() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        document.getElementById("btn-prev").classList.add("disabled")
+        document.querySelectorAll('.date-item, .date-label').forEach(el => {
+            const index = parseInt(el.dataset.index);
+            el.style.display = (index >= currentPage * pageSize && index < (currentPage + 1) * pageSize) ? '' : 'none';
+        });
+    }
+
+    function nextWeek() {
+        const maxPage = Math.floor((totalItems - 1) / pageSize);
+        if (currentPage < maxPage) {
+            currentPage++;
+            updateDateVisibility();
+        }
+        document.getElementById("btn-next").classList.add("disabled")
+        document.getElementById("btn-prev").classList.remove("disabled")
+    }
+
+    function prevWeek() {
+        if (currentPage > 0) {
+            currentPage--;
+            updateDateVisibility();
+        }
+        document.getElementById("btn-prev").classList.add("disabled")
+        document.getElementById("btn-next").classList.remove("disabled")
+    }
+
+    document.addEventListener("DOMContentLoaded", updateDateVisibility);
+</script>

@@ -1,0 +1,37 @@
+﻿@model InfoViewModel
+
+<div class="col-12 col-lg-6 order-lg-2">
+    <img class="w-100 object-fit-cover rounded-top border border-dark p-0" src="https://t3.ftcdn.net/jpg/03/10/62/12/360_F_310621281_foEqKBGtGlNWFQRePgdF5BpLOFyTsnzO.jpg" alt="Alternate Text" />
+
+    <div class="position-relative mb-5 ms-3">
+        <img class="rounded-circle border border-5 border-white img-thumbnail position-absolute top-0 translate-middle-y" width="70" height="70" src="https://cdn-icons-png.flaticon.com/512/447/447840.png" alt="Alternate Text" />
+    </div>
+
+    <div class="px-5">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-12">
+                <h3>@Model.Name</h3>
+
+                <p>@Model.Description</p>
+            </div>
+            <div class="col-12 col-md-6 col-lg-12">
+                <div class="py-2 d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-phone-volume fa-fw fs-5 pe-3 text-primary"></i>
+                    <p class="m-0">@Model.Phone</p>
+                </div>
+                <div class="py-2 d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-location-dot fa-fw fs-5 pe-3 text-primary"></i>
+                    <p class="m-0">@Model.Address</p>
+                </div>
+                <div class="py-2 d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-envelope fa-fw fs-5 pe-3 text-primary"></i>
+                    <p class="m-0">@Model.Email</p>
+                </div>
+                <div class="py-2 d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-clock fa-fw fs-5 pe-3 text-primary"></i>
+                    <p class="m-0">@Model.WorkingTime</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
