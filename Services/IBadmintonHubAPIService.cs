@@ -7,5 +7,6 @@ namespace BadmintonHubWeb.Services
         Task<InfoViewModel?> GetInfoAsync();
         Task<List<FieldClourseViewModel>> GetCloseDates();
         Task<List<CourtViewModel>> GetAvailableCourts(FindAvailableCourtsViewModel courts);
+        Task<List<MenuViewModel>> GetAllMenus();
     }
 }

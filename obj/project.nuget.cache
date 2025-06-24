@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "L9vW1gxsegQ=",
+  "dgSpecHash": "nsiP3nHUDuk=",
   "success": true,
-  "projectFilePath": "D:\\workspace\\c#\\BadmintonHubWeb\\BadmintonHubWeb.csproj",
+  "projectFilePath": "D:\\workspace\\c_sharp\\BadmintonHubWeb\\BadmintonHubWeb.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\votin\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\votin\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

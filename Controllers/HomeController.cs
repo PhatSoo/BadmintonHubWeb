@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BadmintonHubWeb.Models;
 using BadmintonHubWeb.Services;
+using System.Threading.Tasks;
 
 namespace BadmintonHubWeb.Controllers;
 
@@ -16,9 +17,13 @@ public class HomeController : Controller
         _apiService = apiService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View(new BookingViewModel());
+        var menus = await _apiService.GetAllMenus();
+        return View(new BookingViewModel()
+        {
+            Menu = menus,
+        });
     }
 
     public async Task<JsonResult> FindAvailableCourts([FromBody]FindAvailableCourtsViewModel model)

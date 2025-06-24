@@ -1,0 +1,30 @@
+﻿@model List<MenuViewModel>
+
+@foreach (var menu in Model.Select((value, index) => new {value, index}))
+{
+    var isActive = menu.index == 0 ? "active" : "";
+
+    <div id="menu_@menu.index" class="col-md-6 col-lg-12 rounded btn btn-outline-secondary @isActive" onclick="handleMenuClick(this)" data-id="@menu.value.Id">
+        <div class="d-flex gap-2 align-items-center p-2 text-start">
+            <img class="rounded border border-1 border-dark" width="70" height="70" src="@menu.value.ImageUrl" />
+            <div>
+                <h5 class="m-0 fw-bold">@menu.value.Name</h5>
+                <p class="m-0">@menu.value.Description</p>
+                <h6 class="m-0">$@menu.value.Price - <span class="fw-lighter">1 hour</span></h6>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    const handleMenuClick = (e) => {
+        const menuItems = document.querySelectorAll('[id^="menu_"]');
+        console.log(menuItems)
+
+        menuItems.forEach(item => {
+            item.classList.remove("active")
+        })
+        // e.getAttribute('data-id')
+        e.classList.add("active")
+    }
+</script>

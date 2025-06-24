@@ -70,5 +70,23 @@ namespace BadmintonHubWeb.Services
             var data = JsonConvert.DeserializeObject<List<CourtViewModel>>(json);
             return data ?? [];
         }
+
+        public async Task<List<MenuViewModel>> GetAllMenus()
+        {
+            var response = await _httpClient.GetAsync("menu");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return [];
+            }
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var menus = System.Text.Json.JsonSerializer.Deserialize<List<MenuViewModel>>(jsonString, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return menus ?? [];
+        }
     }
 }

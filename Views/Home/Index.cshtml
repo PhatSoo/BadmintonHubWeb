@@ -12,26 +12,9 @@
 
             <hr />
 
-            <div class="d-flex gap-2 align-items-center bg-secondary p-2">
-                <img class="rounded border border-1 border-dark" width="70" height="70" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgIAFwTaBOi189iF7NSxzRx7U1oI90_QsS6A&s" />
-                <div>
-                    <h5 class="m-0 text-white fw-bold">Booking court</h5>
-                    <p class="m-0 text-white">Get a court...</p>
-                    <h6 class="m-0 text-white">$3 - <span class="fw-lighter">1 hour</span></h6>
-                </div>
+            <div class="row gx-md-2 gy-2 px-3">
+                @await Html.PartialAsync("_LoadMenus", Model.Menu)
             </div>
-
-            <hr />
-
-            <div class="d-flex gap-2 align-items-center p-2">
-                <img class="rounded border border-1 border-dark" width="70" height="70" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/badminton-coach-1653707-1400021.png" />
-                <div>
-                    <h5 class="m-0 fw-bold">Booking coach</h5>
-                    <p class="m-0">Get a professional coach's badminton...</p>
-                    <h6 class="m-0">$10 - <span class="fw-lighter">1 hour/person</span></h6>
-                </div>
-            </div>
-
             <hr />
 
             <div>

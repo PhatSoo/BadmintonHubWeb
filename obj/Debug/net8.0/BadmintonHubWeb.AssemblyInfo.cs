@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BadmintonHubWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+31b8fca76a1d7ab64a3e8c0d61ceaf965c45b57b")]
 [assembly: System.Reflection.AssemblyProductAttribute("BadmintonHubWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BadmintonHubWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
